@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mybatis.entity.Book">
+	<sql id="book_columns">
+		id,book_name,book_price
+	</sql>
+	<resultMap type="Book" id="bookProperty4Columns">
+		<id property="id" column="id" />
+		<result property="name" column="book_name" />
+		<result property="price" column="book_price" />
+	</resultMap>
+	<select id="queryBookById" resultType="Book">
+		select
+		<include refid="book_columns" />
+		from t_book where id=#{id}
+	</select>
+	<select id="queryBookById2" resultType="Book">
+		SELECT id,book_name AS
+		NAME,book_price AS price FROM t_book where id=#{id}
+	</select>
+	<select id="queryBookById3" resultMap="bookProperty4Columns">
+		select
+		<include refid="book_columns" />
+		from t_book where id=#{id}
+	</select>
+	<select id="queryBook4Map" resultType="hashmap">
+		select
+		<include refid="book_columns" />
+		from t_book where
+		id=#{id}
+	</select>
+	<select id="queryBook4Like" resultMap="bookProperty4Columns"
+		parameterType="Book">
+		select
+		<include refid="book_columns" />
+		from t_book where
+		book_name like '%${name}%'
+	</select>
+	<insert id="insertBook" parameterType="Book">
+		insert into
+		t_book(book_name,book_price) values(#{name},#{price})
+	</insert>
+	<insert id="insertBookFromMap" parameterType="hashmap">
+		insert into
+		t_book(book_name,book_price) values(#{name},#{price})
+	</insert>
+</mapper>
